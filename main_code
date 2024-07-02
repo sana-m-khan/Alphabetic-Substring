@@ -1,0 +1,57 @@
+import java.util.Arrays;
+import java.util.Collections;
+
+public class alphabeticSubs {
+    public static String minWindow(String s, String t) {
+        int len1 = s.length();
+        int len2 = t.length();
+        String answer = "";
+        int min = Integer.MAX_VALUE;
+
+        for (int i = 0; i < len1; i++) {
+            for (int j = i; j < len1; j++) {
+                String sub = s.substring(i, j + 1);
+                if (valid(sub, t)) {
+                    int currentLength = sub.length();
+
+                    if (currentLength < min) {
+                        min = currentLength;
+                        answer = sub;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+
+    public static boolean valid(String s, String t) {
+        int[] count = new int[256];
+        
+        for (int i = 0; i < t.length(); i++) {
+            char ch = t.charAt(i);
+            count[ch]++;
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (count[ch] > 0) {
+                count[ch]--; //sdo this before<>?
+            }
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (count[i] > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+//tests
+    public static void main(String[] args) {
+        String s = "ADOBECODEBANC";
+        String t = "ABC";
+        System.out.println(minWindow(s, t));
+    }
+}
+ 
